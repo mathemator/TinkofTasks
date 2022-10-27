@@ -16,15 +16,15 @@ public class TaskSixth {
     }
     private static int[] findIndexes(int[] players) {
         int[] pair = {-1, -1};
-        int firstIndex = 0;
-        int secondIndex = 0;
+        int firstIndex = -1;
+        int secondIndex = -1;
         int countWrongPositions = 0;
         for (int i = 0; i < players.length; i++) {
             if ((players[i] + i) % 2 == 0) {
                 countWrongPositions++;
-                if (firstIndex == 0) {
+                if (firstIndex == -1) {
                     firstIndex = i;
-                } else if (secondIndex == 0) {
+                } else if (secondIndex == -1) {
                     secondIndex = i;
                 }
             }
