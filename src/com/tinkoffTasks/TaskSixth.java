@@ -30,8 +30,8 @@ public class TaskSixth {
             }
         }
         if (countWrongPositions == 2 && (players[firstIndex] + players[secondIndex]) % 2 != 0) {
-            pair[0] = firstIndex + 1;
-            pair[1] = secondIndex + 1;
+            pair[0] = ++firstIndex;
+            pair[1] = ++secondIndex;
         }
         return pair;
     }
