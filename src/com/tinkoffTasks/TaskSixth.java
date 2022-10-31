@@ -1,5 +1,6 @@
 package com.example.tinkof;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class TaskSixth {
@@ -10,31 +11,32 @@ public class TaskSixth {
         for (int i = 0; i < n; i++) {
             players[i] = scanner.nextInt();
         }
-        for (int index : findIndexes(players)) {
-            System.out.println(index);
-        }
+        int[] pair = findIndexes(players);
+        System.out.println(pair[0] + " " + pair[1]);
     }
-    private static int[] findIndexes(int[] players) {
-        int[] pair = {-1, -1};
-        int firstIndex = -1;
-        int secondIndex = -1;
-        int countWrongPositions = 0;
+
+    private static boolean checkPlayers(int[] players) {
         for (int i = 0; i < players.length; i++) {
-            if ((players[i] + i) % 2 == 0) {
-                countWrongPositions++;
-                if (firstIndex == -1) {
-                    firstIndex = i;
-                } else if (secondIndex == -1) {
-                    secondIndex = i;
-                }
+            if ((i + players[i]) % 2 == 0) {
+                return false;
             }
         }
-        if (countWrongPositions == 2 && (players[firstIndex] + players[secondIndex]) % 2 != 0) {
-            pair[0] = ++firstIndex;
-            pair[1] = ++secondIndex;
+        return true;
+    }
+
+    private static int[] findIndexes(int[] players) {
+        int[] pair = new int[]{-1, -1};
+        for (int i = 0; i < players.length; i++) {
+            for (int j = i + 1; j < players.length; j++) {
+                int[] copyPlayers = Arrays.copyOf(players, players.length);
+                int tmp = copyPlayers[i];
+                copyPlayers[i] = copyPlayers[j];
+                copyPlayers[j] = tmp;
+                if (checkPlayers(copyPlayers)) {
+                    return new int[]{i + 1, j + 1};
+                }
+            }
         }
         return pair;
     }
 }
-
-
