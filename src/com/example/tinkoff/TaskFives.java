@@ -1,4 +1,4 @@
-package com.example.tinkof;
+package com.example.tinkoff;
 
 import java.util.Scanner;
 
@@ -20,11 +20,9 @@ public class TaskFives {
             for (int i = 1; i <= 9; i++) {
                 long testNumber = findMultiplyNumber(maxRank) * i;
                 if (testNumber >= l && testNumber <= r) {
-                    //  System.out.print(testNumber + " ");
                     countTests++;
                 }
             }
-         //  System.out.println();
             maxRank--;
         }
         return countTests;
@@ -47,7 +45,6 @@ public class TaskFives {
             }
             n = n/ 10;
         }
-   //     System.out.println(rank);
         return rank;
     }
 }
