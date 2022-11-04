@@ -13,37 +13,62 @@ public class TaskSeven {
         }
         int[] result = result(numbers);
         System.out.println(result[0] + " " + result[1]);
-
     }
 
-    private static int findIndex(int[] numbers) {
+    private static int countOfGivers(int number, int[] numbers) {
+        int givers = 0;
         for (int i = 0; i < numbers.length; i++) {
-            if (numbers[i] == i + 1) {
-                return i + 1;
-            } else {
-                for (int j = 0; j < numbers.length; j++) {
-                    if (i != j && numbers[i] == numbers[j]) {
-                        return j + 1;
-                    }
-                }
+            if (number != i + 1 && numbers[i] == number) {
+                givers++;
             }
         }
-        return -1;
+        return givers;
     }
 
-    private static int[] result(int[] numbers) {
-        int index = findIndex(numbers);
-        if (index != -1) {
-            for (int i = 1; i <= numbers.length; i++) {
-                int[] copyNumbers = Arrays.copyOf(numbers, numbers.length);
-                if (copyNumbers[index - 1] != i) {
-                    copyNumbers[index - 1] = i;
-                    if (findIndex(copyNumbers) == -1) {
-                        return new int[]{index, i};
+    private static boolean checkArray(int[] numbers) {
+        for (int i = 0; i < numbers.length; i++) {
+            if (countOfGivers(i + 1, numbers) != 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected static int[] result(int[] numbers) {
+        int number = findNumber(numbers);
+        if (number != -1) {
+            for (int i = 0; i < numbers.length; i++) {
+                int[] copy = Arrays.copyOf(numbers, numbers.length);
+                if (i + 1 == numbers[i] || numbers[i] > numbers.length) {
+                    copy[i] = number;
+                    if (checkArray(copy)) {
+                        return new int[]{i + 1, number};
+                    }
+
+                } else if (countOfGivers(numbers[i], numbers) > 1) {
+                    copy[i] = number;
+                    if (checkArray(copy)) {
+                        return new int[]{i + 1, number};
                     }
                 }
             }
+
         }
         return new int[]{-1, -1};
+
+    }
+
+    private static int findNumber(int[] numbers) {
+        int number = -1;
+        for (int i = 0; i < numbers.length; i++) {
+            int count = countOfGivers(i + 1, numbers);
+            if (count == 0 && number == -1) {
+                number = i + 1;
+            } else if (count == 0 && number != -1) {
+                number = -1;
+                break;
+            }
+        }
+        return number;
     }
 }
