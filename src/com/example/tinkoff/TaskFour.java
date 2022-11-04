@@ -1,4 +1,4 @@
-package com.example.tinkof;
+package com.example.tinkoff;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -30,7 +30,6 @@ public class TaskFour {
                 maxRank = numberRank;
             }
         }
-      //  System.out.println("maxRank = " + maxRank);
         return maxRank;
     }
 
@@ -47,11 +46,9 @@ public class TaskFour {
         int maxRank = findMaxRank(numbers);
         int[] copyNumber = Arrays.copyOf(numbers, numbers.length);
         reverseSort(copyNumber);
-        //printArray(copyNumber);
-        while (maxRank >= 0 && k > 0) {
+           while (maxRank >= 0 && k > 0) {
             int rank = (int) Math.pow(10, maxRank);
             sortByRank(copyNumber, rank);
-        //    printArray(copyNumber);
             for (int i = 0; i < numbersLength; i++) {
                 int tmp = copyNumber[i] / rank;
                 if (tmp > 0 && tmp % 10 != 9) {
@@ -69,7 +66,6 @@ public class TaskFour {
                 }
             }
             maxRank--;
-        //    printArray(copyNumber);
         }
 
         return copyNumber;
@@ -114,11 +110,4 @@ public class TaskFour {
             }
         }
     }
-
-//    private static void printArray(int[] numbers) {
-//        for (int n : numbers) {
-//            System.out.print(n + "  ");
-//        }
-//        System.out.println();
-//    }
 }
