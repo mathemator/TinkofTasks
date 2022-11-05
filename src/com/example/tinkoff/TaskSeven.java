@@ -1,4 +1,4 @@
-package com.example.tinkof;
+package com.example.tinkoff;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -13,25 +13,6 @@ public class TaskSeven {
         }
         int[] result = result(numbers);
         System.out.println(result[0] + " " + result[1]);
-    }
-
-    private static int countOfGivers(int number, int[] numbers) {
-        int givers = 0;
-        for (int i = 0; i < numbers.length; i++) {
-            if (number != i + 1 && numbers[i] == number) {
-                givers++;
-            }
-        }
-        return givers;
-    }
-
-    private static boolean checkArray(int[] numbers) {
-        for (int i = 0; i < numbers.length; i++) {
-            if (countOfGivers(i + 1, numbers) != 1) {
-                return false;
-            }
-        }
-        return true;
     }
 
     protected static int[] result(int[] numbers) {
@@ -70,5 +51,28 @@ public class TaskSeven {
             }
         }
         return number;
+    }
+
+    private static int countOfGivers(int number, int[] numbers) {
+        int givers = 0;
+        for (int i = 0; i < numbers.length; i++) {
+            if (number != i + 1 && numbers[i] == number) {
+                givers++;
+            }
+        }
+        return givers;
+    }
+
+    private static boolean checkArray(int[] numbers) {
+        int counter = 1;
+        int number = 1;
+        while (numbers[number - 1] != 1) {
+            number = numbers[number - 1];
+            counter++;
+        }
+        if (counter == numbers.length) {
+            return true;
+        }
+        return false;
     }
 }
