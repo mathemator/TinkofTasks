@@ -1,4 +1,4 @@
-package com.example.tinkof;
+package com.example.tinkoff;
 
 import java.util.ArrayList;
 import java.util.List;
