@@ -1,103 +1,116 @@
 package com.example.tinkoff;
 
-import java.util.Arrays;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
 
 public class TaskSeven {
-    public static void main(String[] args)  {
-        Scanner scanner = new Scanner(System.in);
-        int n = scanner.nextInt();
-        int[] numbers = new int[n];
-        for (int i = 0; i < n; i++) {
-            numbers[i] = scanner.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        int count = Integer.parseInt(bufferedReader.readLine());
+        int[] numbers = new int[count];
+        StringTokenizer tokenizer = new StringTokenizer(bufferedReader.readLine(), " ");
+        for (int i = 0; i < count; i++) {
+            numbers[i] = Integer.parseInt(tokenizer.nextToken());
         }
         int[] result = result(numbers);
         System.out.println(result[0] + " " + result[1]);
     }
 
+    public static int[] result(int[] numbers) {
+        SecretSanta secretSanta = new SecretSanta(numbers);
 
-    protected static int[] result(int[] numbers) {
-        int number = findNumber(numbers);
-        if (number != -1) {
-            for (int i = 0; i < numbers.length; i++) {
-                if (i + 1 == numbers[i]) {
-                    int[] copy = Arrays.copyOf(numbers, numbers.length);
-                    copy[i] = number;
-                    if (checkLoop(copy)) {
-                        return new int[]{i + 1, number};
-                    }
-                } else if (countOfGivers(numbers[i], numbers) == 2) {
-                    int[] copy = Arrays.copyOf(numbers, numbers.length);
-                    copy[i] = number;
-                    if (checkLoop(copy)) {
-                        return new int[]{i + 1, number};
-                    }
-                }
+        List<Integer> zero = secretSanta.filter(0);
+        List<Integer> two = secretSanta.filter(2);
+
+        if (zero.size() == 1 && two.size() == 1) {
+            int newRecipient = zero.get(0);
+            int hasTwo = two.get(0);
+
+            SecretSanta secretSanta1 = secretSanta.copy();
+            int newIndex = secretSanta1.get(hasTwo).remove(0);
+            secretSanta1.get(newRecipient).add(newIndex);
+
+            if (secretSanta1.checkLoop()) {
+                return new int[]{newIndex, newRecipient};
             }
 
+            secretSanta1 = secretSanta.copy();
+            newIndex = secretSanta1.get(hasTwo).remove(1);
+            secretSanta1.get(newRecipient).add(newIndex);
+
+            if (secretSanta1.checkLoop()) {
+                return new int[]{newIndex, newRecipient};
+            }
         }
         return new int[]{-1, -1};
-
     }
 
-    private static int findNumber(int[] numbers) {
-        for (int i = 0; i < numbers.length; i++) {
-            int count = countOfGivers(i + 1, numbers);
-            if (count == 0) {
-                return  i + 1;
+    static class SecretSanta {
+        private Map<Integer, List<Integer>> map = new HashMap<>();
+
+        public SecretSanta(int[] numbers) {
+            for (int i = 0; i < numbers.length; i++) {
+                map.put(i + 1, new ArrayList<>());
+            }
+            for (int i = 0; i < numbers.length; i++) {
+                List<Integer> list = map.get(numbers[i]);
+                list.add(i + 1);
+
             }
         }
-        return -1;
-    }
 
-    private static int countOfGivers(int number, int[] numbers) {
-        int givers = 0;
-        for (int i = 0; i < numbers.length; i++) {
-            if (numbers[i] == number && numbers[i] != i+1) {
-                givers++;
+        public SecretSanta(Map<Integer, List<Integer>> map) {
+            this.map = map;
+        }
+
+        private boolean checkLoop() {
+            int number = 1;
+            int counter = 0;
+            do {
+                if (map.get(number).size() != 1) {
+                    return false;
+                }
+                number = map.get(number).get(0);
+                counter++;
+
+            } while (number != 1);
+
+            if (counter == map.size()) {
+                return true;
+            }
+            return false;
+        }
+
+        private List<Integer> filter(int size) {
+            List<Integer> list = new ArrayList<>();
+            for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+                if (entry.getValue().size() == size) {
+                    list.add(entry.getKey());
+                }
+            }
+            return list;
+        }
+
+
+        private void printMap() {
+            for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+                System.out.println(entry.getKey() + " " + entry.getValue());
             }
         }
-        return givers;
-    }
 
-    private static boolean checkLoop(int[] numbers) {
-        boolean[] checkLoop = new boolean[numbers.length + 1];
-        checkLoop[0] = true;
-        int target = 1;
-        while (!checkLoop[target]) {
-            checkLoop[target] = true;
-            target = numbers[target - 1];
+        public List<Integer> get(int key) {
+            return map.get(key);
         }
-        for (boolean isTrue : checkLoop) {
-            if (!isTrue) {
-                return false;
+
+        public SecretSanta copy() {
+            Map<Integer, List<Integer>> newMap = new HashMap<>();
+            for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+                newMap.put(entry.getKey(), new ArrayList<>(entry.getValue()));
             }
-        }
-        return true;
-    }
-
-    private static void print(int[] copy) {
-        for (int num : copy) {
-            System.out.print(num + " ");
+            return new SecretSanta(newMap);
         }
     }
-
 }
-//    private static boolean checkArray(int[] numbers) {
-//        int counter = 1;
-//        int number = 1;
-//        while (numbers[number - 1] != 1) {
-//            if (countOfGivers(number, numbers) == 1) {
-//                number = numbers[number - 1];
-//                counter++;
-//            } else {
-//                break;
-//            }
-//        }
-//        if (counter == numbers.length) {
-//            return true;
-//        }
-//        return false;
-//    }
-
-

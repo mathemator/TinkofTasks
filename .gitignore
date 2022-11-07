@@ -4,6 +4,8 @@ options
 optionsj
 #игнорировать файлы
 .idea
-StartJava.iml
+.git
+*.iml
+.gitignore
 
 
