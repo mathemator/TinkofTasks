@@ -20,40 +20,40 @@ public class TaskSeven1 {
     }
 
     static int[] result1(int[] numbers) {
-        int newRecipient = findNewRecipient(numbers);
+        int newRecipient = filter(numbers,0);
         if (newRecipient != -1) {
-            int hasTwoGivers = hasTwoGivers(numbers);
-            for (int i = 0; i < numbers.length; i++) {
+            int hasTwoGivers = filter(numbers,2);
+            if(hasTwoGivers !=-1) {
+                for (int i = 0; i < numbers.length; i++) {
 
-                if (numbers[i] == hasTwoGivers) {
-                    int[]newArr = Arrays.copyOf(numbers, numbers.length);
-                    newArr[i] = newRecipient;
-                    if (checkArr(newArr)) {
-                        return new int[]{i + 1, newRecipient};
+                    if (numbers[i] == hasTwoGivers) {
+                        int[] newArr = Arrays.copyOf(numbers, numbers.length);
+                        newArr[i] = newRecipient;
+                        if (checkArr(newArr)) {
+                            return new int[]{i + 1, newRecipient};
+                        }
                     }
                 }
             }
-
         }
         return new int[]{-1, -1};
     }
 
-    private static int hasTwoGivers(int[] numbers) {
-        for (int i = 0; i < numbers.length; i++) {
-            if (countOfGivers(i + 1, numbers) == 2) {
-                return i + 1;
-            }
-        }
-        return -1;
-    }
 
-    private static int findNewRecipient(int[] numbers) {
+
+    private static int filter(int[] numbers, int n) {
+        int count = -1;
         for (int i = 0; i < numbers.length; i++) {
-            if (countOfGivers(i + 1, numbers) == 0) {
-                return i + 1;
+            if (countOfGivers(i + 1, numbers) == n) {
+                if (count != -1) {
+                    count = -1;
+                    break;
+                } else {
+                    count = i + 1;
+                }
             }
         }
-        return -1;
+        return count;
     }
 
     private static int countOfGivers(int n, int[] numbers) {

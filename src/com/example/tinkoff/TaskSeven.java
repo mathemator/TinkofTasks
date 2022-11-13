@@ -13,7 +13,7 @@ public class TaskSeven {
         int[] numbers = new int[count];
         StringTokenizer tokenizer = new StringTokenizer(bufferedReader.readLine(), " ");
         for (int i = 0; i < count; i++) {
-            numbers[i] = Integer.parseInt(tokenizer.nextToken());
+            numbers[i] = Integer.parseInt(bufferedReader.readLine());
         }
         int[] result = result(numbers);
         System.out.println(result[0] + " " + result[1]);
@@ -32,6 +32,7 @@ public class TaskSeven {
             SecretSanta secretSanta1 = secretSanta.copy();
             int newIndex = secretSanta1.get(hasTwo).remove(0);
             secretSanta1.get(newRecipient).add(newIndex);
+            secretSanta1.printMap();
 
             if (secretSanta1.checkLoop()) {
                 return new int[]{newIndex, newRecipient};
@@ -40,6 +41,7 @@ public class TaskSeven {
             secretSanta1 = secretSanta.copy();
             newIndex = secretSanta1.get(hasTwo).remove(1);
             secretSanta1.get(newRecipient).add(newIndex);
+            secretSanta1.printMap();
 
             if (secretSanta1.checkLoop()) {
                 return new int[]{newIndex, newRecipient};
@@ -97,8 +99,9 @@ public class TaskSeven {
 
         private void printMap() {
             for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
-                System.out.println(entry.getKey() + " " + entry.getValue());
+                System.out.print(entry.getKey() + " " + entry.getValue()+" : ");
             }
+            System.out.println();
         }
 
         public List<Integer> get(int key) {
