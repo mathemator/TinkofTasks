@@ -38,7 +38,7 @@ class Lunches {
         }
         System.out.println("_________________________________");
         for (Map.Entry<Lunch, Lunch> pair : economy.entrySet()) {
-            System.out.println("coupon: " + pair.getKey() + " bue: " + pair.getValue());
+            System.out.println("coupon: " + pair.getKey() + " spend on: " + pair.getValue());
         }
         int sum = 0;
         for (Lunch lunch : lunches) {
@@ -55,14 +55,14 @@ class Lunches {
         Lunch maxPrice = getMaxPrice(lunch);
         if (economy.containsKey(maxPrice)) {
             Lunch maxPrice1 = getExpectedMaxPrice(lunch);
-            if (maxPrice1.getPrice() == 0) {
+            if (maxPrice1.getPrice() == -1) {
                 Lunch nextCoupon = getNextCoupon(lunch.getNumber());
                 if (nextCoupon != null) {
                     economy(nextCoupon);
                 }
             }
             Lunch maxPrice2 = economy.get(maxPrice);
-            if (maxPrice1.getPrice() + maxPrice2.getPrice() > maxPrice.getPrice()) {
+            if (maxPrice1.getPrice() + maxPrice2.getPrice() >= maxPrice.getPrice()) {
                 economy.put(lunch, maxPrice1);
             } else {
                 economy.remove(maxPrice);
@@ -75,8 +75,6 @@ class Lunches {
         if (nextCoupon != null) {
             economy(nextCoupon);
         }
-
-
     }
 
 
@@ -92,7 +90,7 @@ class Lunches {
     }
 
     private Lunch getExpectedMaxPrice(Lunch lunch) {
-        Lunch maxPrice = new Lunch(0, 0);
+        Lunch maxPrice = new Lunch(0, -1);
         for (int i = lunch.getNumber() + 1; i < lunches.size(); i++) {
             Lunch newLunch = lunches.get(i);
             if (newLunch.getPrice() > maxPrice.getPrice() && !economy.values().contains(newLunch) && !economy.containsKey(newLunch)) {
