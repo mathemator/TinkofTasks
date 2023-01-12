@@ -5,12 +5,20 @@ import java.util.Scanner;
 public class TaskFives {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        /*
+        переменные почти всегда (кроме, например, тех, что в цикле for(i=0;...)) лучше называть осмысленно, типа leftBorder? 
+        */
         long l = scanner.nextLong();
         long r = scanner.nextLong();
 
        System.out.println(findCountTests(l, r));
     }
 
+    /*
+    имя метода тоже не вполне по-английски звучит. возможные варианты,
+    в зависимости от смысла это findTestCount - число тестов?
+    хорошо, что имена методов начинаются с глаголов
+    */
     private static int findCountTests(long l, long r) {
         int countTests = 0;
         int minRank = findRank(l);
@@ -28,6 +36,9 @@ public class TaskFives {
         return countTests;
     }
 
+    /*
+    возможно, лучше подойдёт слово multiplicator
+    */
     private static long findMultiplyNumber(int rank) {
         long multiplyNumber = 1;
         while (rank > 0) {
